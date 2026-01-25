@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:dam="http://www.day.com/dam/1.0"
+    jcr:primaryType="dam:Asset"
+    jcr:title="Home"
+    sling:resourceType="dam/cfm/models/homepage">
+    <jcr:content
+        jcr:primaryType="dam:AssetContent"
+        jcr:mimeType="application/json"
+        dam:status="draft"
+        cq:model="/conf/store/settings/dam/cfm/models/homepage">
+        <data
+            jcr:primaryType="nt:unstructured">
+            <master
+                jcr:primaryType="nt:unstructured">
+                <elements
+                    jcr:primaryType="nt:unstructured">
+                    <title
+                        jcr:primaryType="nt:unstructured"
+                        value="Home"/>
+                    <heroTitle
+                        jcr:primaryType="nt:unstructured"
+                        value="Welcome to Store Platform"/>
+                    <heroSubtitle
+                        jcr:primaryType="nt:unstructured"
+                        value="Modern Next.js + AEM Headless"/>
+                </elements>
+            </master>
+        </data>
+    </jcr:content>
+</jcr:root>

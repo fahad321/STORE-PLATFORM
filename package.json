@@ -12,6 +12,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "packageManager": "pnpm@9.15.9",
   "devDependencies": {
     "prettier": "^3.8.1",
     "turbo": "^2.7.6"

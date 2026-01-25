@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Store Platform Content Package</comment>
+    <entry key="acHandling">merge_preserve</entry>
+    <entry key="requiresRoot">false</entry>
+    <entry key="group">Store Platform</entry>
+    <entry key="name">store-platform-content</entry>
+    <entry key="version">1.0.0</entry>
+    <entry key="description">Content package for Store Platform AEM headless setup</entry>
+</properties>

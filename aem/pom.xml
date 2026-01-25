@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.store-platform</groupId>
+    <artifactId>store-platform-content</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>content-package</packaging>
+
+    <name>Store Platform - Content Package</name>
+    <description>Content package for Store Platform AEM headless setup</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <aem.sdk.api>2024.1.0</aem.sdk.api>
+        <componentGroupName>Store Platform</componentGroupName>
+        <contentPackageName>store-platform-content</contentPackageName>
+        <contentPackageVersion>1.0.0</contentPackageVersion>
+        <vault.user>admin</vault.user>
+        <vault.password>admin</vault.password>
+        <aem.host>localhost</aem.host>
+        <aem.port>4502</aem.port>
+        <aem.publish.host>localhost</aem.publish.host>
+        <aem.publish.port>4503</aem.publish.port>
+        <sling.user>admin</sling.user>
+        <sling.password>admin</sling.password>
+        <crx.deploy.url>http://${aem.host}:${aem.port}/crx/packmgr/service.jsp</crx.deploy.url>
+        <crx.publish.deploy.url>http://${aem.publish.host}:${aem.publish.port}/crx/packmgr/service.jsp</crx.publish.deploy.url>
+        <filevault.package.version>1.1.6</filevault.package.version>
+        <content.package.version>0.0.24</content.package.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>adobe-public-releases</id>
+            <name>Adobe Public Releases</name>
+            <url>https://repo.adobe.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>adobe-public-releases</id>
+            <name>Adobe Public Releases</name>
+            <url>https://repo.adobe.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>prepare-vault-work</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <mkdir dir="${project.build.directory}/vault-work/META-INF"/>
+                                <copy file="${project.basedir}/META-INF/MANIFEST.MF" tofile="${project.build.directory}/vault-work/META-INF/MANIFEST.MF"/>
+                                <copy todir="${project.build.directory}/vault-work/META-INF/vault">
+                                    <fileset dir="${project.basedir}/META-INF/vault"/>
+                                </copy>
+                                <copy todir="${project.build.directory}/vault-work/jcr_root">
+                                    <fileset dir="${project.basedir}/jcr_root"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.jackrabbit</groupId>
+                <artifactId>filevault-package-maven-plugin</artifactId>
+                <version>${filevault.package.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <workspaceDirectory>${project.build.directory}/vault-work</workspaceDirectory>
+                    <group>${componentGroupName}</group>
+                    <name>${contentPackageName}</name>
+                    <packageType>application</packageType>
+                    <properties>
+                        <acHandling>merge_preserve</acHandling>
+                        <requiresRoot>false</requiresRoot>
+                    </properties>
+                    <filters>
+                        <filter>
+                            <root>/content/dam/store-platform</root>
+                        </filter>
+                        <filter>
+                            <root>/conf/store-platform</root>
+                        </filter>
+                    </filters>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.day.jcr.vault</groupId>
+                <artifactId>content-package-maven-plugin</artifactId>
+                <version>${content.package.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <targetURL>${crx.deploy.url}</targetURL>
+                    <failOnError>true</failOnError>
+                    <userId>${vault.user}</userId>
+                    <password>${vault.password}</password>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>autoInstallPackage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.day.jcr.vault</groupId>
+                        <artifactId>content-package-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>install-package</id>
+                                <goals>
+                                    <goal>install</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>autoInstallPackagePublish</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.day.jcr.vault</groupId>
+                        <artifactId>content-package-maven-plugin</artifactId>
+                        <configuration>
+                            <targetURL>${crx.publish.deploy.url}</targetURL>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>install-package-publish</id>
+                                <goals>
+                                    <goal>install</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

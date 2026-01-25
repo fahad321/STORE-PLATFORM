@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspaceFilter version="1.0">
+    <filter root="/content/dam/store-platform"/>
+    <filter root="/content/dam/store-platform/content-fragments/home" mode="replace"/>
+    <filter root="/conf/store"/>
+    <filter root="/conf/store/settings/dam/cfm/models/homepage" mode="replace"/>
+    <filter root="/content/cq:graphql/persistent-endpoint" mode="replace"/>
+    <filter root="/content/cq:graphql/persistent-endpoint/store"/>
+</workspaceFilter>
