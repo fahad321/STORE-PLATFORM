@@ -14,10 +14,9 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
-      - name: Enable corepack (pnpm)
-        run: |
-          corepack enable
-          corepack prepare pnpm@9.15.9 --activate
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
       - name: Configure install
         run: |
           echo "NPM_CONFIG_PRODUCTION=false" >> $GITHUB_ENV
