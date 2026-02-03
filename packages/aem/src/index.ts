@@ -90,16 +90,18 @@ export type HeroBannerContent = {
 export async function getHomePage(input: {
   path: string;
   revalidateSeconds?: number;
+  endpoint?: string;
 }): Promise<HomeContent> {
   const { AEM_MODE, AEM_ENDPOINT } = env();
   const revalidateSeconds = input.revalidateSeconds ?? 60;
+  const endpoint = input.endpoint ?? AEM_ENDPOINT;
 
-  if (!AEM_ENDPOINT) {
+  if (!endpoint) {
     throw new Error("Missing AEM_ENDPOINT for home page query");
   }
 
   if (AEM_MODE === "PERSISTED_GET") {
-    const url = new URL(AEM_ENDPOINT);
+    const url = new URL(endpoint);
     url.searchParams.set("path", input.path);
 
     const json = await aemFetch<unknown>(url.toString(), {
@@ -126,7 +128,7 @@ export async function getHomePage(input: {
     }
   `;
 
-  const json = await aemFetch<unknown>(AEM_ENDPOINT, {
+  const json = await aemFetch<unknown>(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query, variables: { path: input.path } }),

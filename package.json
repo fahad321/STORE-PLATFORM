@@ -4,17 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "turbo dev",
+    "dev": "turbo dev --filter=web --filter=api --filter=@services/content-service",
     "build": "turbo build",
     "lint": "turbo lint",
-    "format": "prettier -w ."
+    "format": "prettier -w .",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@9.15.9",
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^20",
+    "nodemon": "^3.1.11",
     "prettier": "^3.8.1",
-    "turbo": "^2.7.6"
+    "ts-node": "^10.9.2",
+    "turbo": "^2.7.6",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
