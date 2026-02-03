@@ -15,8 +15,11 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+      - name: Configure install
+        run: |
+          echo "NPM_CONFIG_PRODUCTION=false" >> $GITHUB_ENV
       - name: Install
-        run: pnpm -w install
+        run: pnpm -w install --frozen-lockfile
       - name: Lint
         run: pnpm -w lint
       - name: Typecheck
