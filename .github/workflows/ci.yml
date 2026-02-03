@@ -19,7 +19,10 @@ jobs:
         run: |
           echo "NPM_CONFIG_PRODUCTION=false" >> $GITHUB_ENV
       - name: Install
-        run: pnpm -w install --frozen-lockfile
+        run: pnpm -w install --frozen-lockfile --include=dev
+      - name: Verify eslint
+        run: |
+          ls -l services/content-service/node_modules/.bin/eslint
       - name: Lint
         run: pnpm -w lint
       - name: Typecheck
