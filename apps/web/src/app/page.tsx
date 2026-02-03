@@ -1,9 +1,19 @@
-import { getHeroBanner } from "@packages/aem";
+import { getHeroBanner, type HeroBannerContent } from "@packages/aem";
 import HeroBanner from "../components/hero-banner";
 import SiteNav from "../components/site-nav";
 
 export default async function HomePage() {
-  const hero = await getHeroBanner({ revalidateSeconds: 60 });
+  const fallbackHero: HeroBannerContent = {
+    title: "Welcome to Store Platform",
+    description: "Discover what’s new.",
+  };
+  let hero: HeroBannerContent = fallbackHero;
+
+  try {
+    hero = await getHeroBanner({ revalidateSeconds: 60 });
+  } catch (error) {
+    console.warn("Hero banner fetch failed; using fallback content.", error);
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 md:flex-row">
