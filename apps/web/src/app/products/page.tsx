@@ -25,7 +25,13 @@ async function getProducts() {
 }
 
 export default async function ProductsPage() {
-  const products = await getProducts();
+  let products: Product[] = [];
+
+  try {
+    products = await getProducts();
+  } catch (error) {
+    console.warn("Products fetch failed; rendering empty state.", error);
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 md:flex-row">
@@ -39,16 +45,22 @@ export default async function ProductsPage() {
             <h1 className="text-3xl font-semibold text-slate-900">Browse Products</h1>
           </div>
           <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                name={product.name}
-                price={product.price}
-                imageUrl={product.imageUrl}
-                description={product.description}
-                category={product.category}
-              />
-            ))}
+            {products.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-6 text-sm text-slate-600">
+                Products are unavailable right now. Please check back soon.
+              </div>
+            ) : (
+              products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  name={product.name}
+                  price={product.price}
+                  imageUrl={product.imageUrl}
+                  description={product.description}
+                  category={product.category}
+                />
+              ))
+            )}
           </section>
         </div>
       </main>
