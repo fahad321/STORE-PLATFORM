@@ -10,16 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
+      - name: Enable corepack (pnpm)
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.9 --activate
       - name: Configure install
         run: |
           echo "NPM_CONFIG_PRODUCTION=false" >> $GITHUB_ENV
       - name: Install
-        run: pnpm -w install --frozen-lockfile --include=dev
+        run: pnpm install --frozen-lockfile
       - name: Verify eslint
         run: |
           ls -l services/content-service/node_modules/.bin/eslint
