@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach, vi } from "vitest";
-import { buildServer } from "./server";
-import type { ServiceEnv } from "./env";
+import { buildServer } from "./server.js";
+import type { ServiceEnv } from "./env.js";
 
 vi.mock("@packages/aem", () => ({
   getHeroBanner: vi.fn(async () => ({ title: "Hero", description: "Desc" })),

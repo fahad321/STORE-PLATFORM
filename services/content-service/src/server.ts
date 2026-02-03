@@ -6,7 +6,7 @@ import rateLimit from "@fastify/rate-limit";
 import etag from "@fastify/etag";
 import { randomUUID } from "crypto";
 import { getHeroBanner, getHomePage } from "@packages/aem";
-import type { ServiceEnv } from "./env";
+import type { ServiceEnv } from "./env.js";
 import {
   HealthResponseSchema,
   HeroQuerySchema,
@@ -19,7 +19,7 @@ import {
   type HeroResponse,
   type HomeResponse,
   type ProductsResponse,
-} from "./schemas";
+} from "./schemas.js";
 
 const JSON_CONTENT_TYPE = "application/json";
 
